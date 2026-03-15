@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GildedSMP Store</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --accent: #0066ff;
+      --accent-light: #0080ff;
+      --text: #ffffff;
+      --text-muted: #b0b0b0;
+      --card-bg: #1a1a1a;
+      --radius: 16px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      color: var(--text);
+      font-family: var(--font);
+      background: var(--bg);
+      padding: 2rem 1rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: none;
+    }
+
+    .featured {
+      background: linear-gradient(135deg, #0066ff, #0080ff);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .featured-content h2 {
+      margin: 0 0 0.25rem 0;
+      font-size: 2.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .featured-content h2::before {
+      content: "";
+    }
+
+    .featured-content .subtitle {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+
+    .featured-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      font-weight: 500;
+    }
+
+    .featured-content li {
+      margin-bottom: 0.4rem;
+    }
+
+    .featured-image {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .featured-image img {
+      max-width: 100%;
+      height: auto;
+      max-height: 280px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .product {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 102, 255, 0.15);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      background: transparent;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 1rem;
+      border: none;
+      overflow: visible;
+    }
+
+    .product-image svg {
+      width: 220px;
+      height: 220px;
+      transform: rotate(75deg);
+    }
+
+    .product h3 {
+      margin: -3rem 0 0.4rem 0;
+      font-size: 1.7rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .product .price {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #b0b0b0;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .qty-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .qty-buttons button {
+      padding: 0.5rem;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .qty-buttons button:first-child {
+      background: var(--accent);
+    }
+
+    .qty-buttons button:hover {
+      transform: translateY(-2px);
+    }
+
+    .add-cart {
+      width: 100%;
+      padding: 0.65rem;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 200ms ease;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    .add-cart:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    .badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.35rem 0.7rem;
+      background: #ff6b35;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    footer {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .featured {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .products {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="featured">
+      <div class="featured-content">
+        <h2>Gilded+ Rank</h2>
+        <div class="subtitle">(30 Day Subscription)</div>
+        <ul>
+          <li>+3 Homes</li>
+          <li>+/hide (scrambles username)</li>
+          <li>+/fly in lobbies</li>
+          <li>+Faster Auction Buying (/settings)</li>
+          <li>+Get shards everywhere</li>
+          <li>+Shorter /RTP Cooldown</li>
+          <li>+Priority Queue</li>
+        </ul>
+      </div>
+      <div class="featured-image">
+        <img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/2df9258a8aae6a76e3ac874ccb496cf7daa50713.png" alt="Gilded+ Rank" />
+      </div>
+    </section>
+
+    <section id="products" class="products">
+      <article class="product" style="--accent-color: #22c55e;">
+        <div class="product-image">
+          <svg viewBox="0 0 120 140" width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#22c55e;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+              </linearGradient>
+              <linearGradient id="greenDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#15803d;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#0d3b1f;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <g transform="rotate(-25 60 70)">
+              <rect x="15" y="15" width="40" height="40" fill="url(#greenGrad)" stroke="#0d3b1f" stroke-width="1.5"/>
+              <rect x="25" y="25" width="20" height="20" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+              <rect x="15" y="15" width="40" height="8" fill="url(#greenDark)" opacity="0.4"/>
+              <rect x="50" y="25" width="50" height="20" fill="url(#greenGrad)" stroke="#0d3b1f" stroke-width="1.5"/>
+              <rect x="50" y="25" width="50" height="5" fill="url(#greenDark)" opacity="0.3"/>
+              <rect x="95" y="25" width="8" height="6" fill="url(#greenGrad)" stroke="#0d3b1f" stroke-width="1"/>
+              <rect x="95" y="39" width="8" height="6" fill="url(#greenGrad)" stroke="#0d3b1f" stroke-width="1"/>
+              <rect x="95" y="25" width="8" height="3" fill="url(#greenDark)" opacity="0.5"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Common</h3>
+        <div class="price">$0.49</div>
+        <div class="qty-buttons">
+          <button type="button">1x</button>
+          <button type="button">5x</button>
+          <button type="button">10x</button>
+          <button type="button">20x</button>
+        </div>
+        <button class="add-cart" onclick="goCheckout('Common', '0.49')">🛒 Add to Cart</button>
+      </article>
+
+      <article class="product" style="--accent-color: #a855f7;">
+        <div class="badge">Most Popular</div>
+        <div class="product-image">
+          <svg viewBox="0 0 120 140" width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#d8b4fe;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#a855f7;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+              </linearGradient>
+              <linearGradient id="purpleDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6d28d9;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4c1d95;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <g transform="rotate(-25 60 70)">
+              <rect x="15" y="15" width="40" height="40" fill="url(#purpleGrad)" stroke="#4c1d95" stroke-width="1.5"/>
+              <rect x="25" y="25" width="20" height="20" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+              <rect x="15" y="15" width="40" height="8" fill="url(#purpleDark)" opacity="0.4"/>
+              <rect x="50" y="25" width="50" height="20" fill="url(#purpleGrad)" stroke="#4c1d95" stroke-width="1.5"/>
+              <rect x="50" y="25" width="50" height="5" fill="url(#purpleDark)" opacity="0.3"/>
+              <rect x="95" y="25" width="8" height="6" fill="url(#purpleGrad)" stroke="#4c1d95" stroke-width="1"/>
+              <rect x="95" y="39" width="8" height="6" fill="url(#purpleGrad)" stroke="#4c1d95" stroke-width="1"/>
+              <rect x="95" y="25" width="8" height="3" fill="url(#purpleDark)" opacity="0.5"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Amethyst</h3>
+        <div class="price">$1.60</div>
+        <div class="qty-buttons">
+          <button type="button">1x</button>
+          <button type="button">5x</button>
+          <button type="button">10x</button>
+          <button type="button">20x</button>
+        </div>
+        <button class="add-cart" onclick="goCheckout('Amethyst', '1.60')">🛒 Add to Cart</button>
+      </article>
+
+      <article class="product" style="--accent-color: #ef4444;">
+        <div class="product-image">
+          <svg viewBox="0 0 120 140" width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f87171;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#ef4444;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+              </linearGradient>
+              <linearGradient id="redDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#b91c1c;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#7f1d1d;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <g transform="rotate(-25 60 70)">
+              <rect x="15" y="15" width="40" height="40" fill="url(#redGrad)" stroke="#7f1d1d" stroke-width="1.5"/>
+              <rect x="25" y="25" width="20" height="20" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+              <rect x="15" y="15" width="40" height="8" fill="url(#redDark)" opacity="0.4"/>
+              <rect x="50" y="25" width="50" height="20" fill="url(#redGrad)" stroke="#7f1d1d" stroke-width="1.5"/>
+              <rect x="50" y="25" width="50" height="5" fill="url(#redDark)" opacity="0.3"/>
+              <rect x="95" y="25" width="8" height="6" fill="url(#redGrad)" stroke="#7f1d1d" stroke-width="1"/>
+              <rect x="95" y="39" width="8" height="6" fill="url(#redGrad)" stroke="#7f1d1d" stroke-width="1"/>
+              <rect x="95" y="25" width="8" height="3" fill="url(#redDark)" opacity="0.5"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Crimson</h3>
+        <div class="price">$1.00</div>
+        <div class="qty-buttons">
+          <button type="button">1x</button>
+          <button type="button">5x</button>
+          <button type="button">10x</button>
+          <button type="button">20x</button>
+        </div>
+        <button class="add-cart" onclick="goCheckout('Crimson', '1.00')">🛒 Add to Cart</button>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    function goCheckout(item, price) {
+      window.location.href = 'checkout.html?item=' + encodeURIComponent(item) + '&price=' + encodeURIComponent(price);
+    }
+  </script>
+</body>
+</html>
